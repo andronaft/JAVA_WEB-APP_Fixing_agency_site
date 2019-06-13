@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+<Resource name="jdbc/My_DB"
+          auth="Container"
+          type="javax.sql.DataSource"
+          username="root"
+          password="root"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://localhost:3306/final?useUnicode=true&amp;characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
+
+          maxIdle="30"
+          validationQuery="SELECT 1" />
+</Context>
