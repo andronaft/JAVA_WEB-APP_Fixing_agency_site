@@ -12,26 +12,32 @@
 <%@ page isELIgnored="false" %>
 
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="C:\Users\andro\IdeaProjects\mysite_0\src\mysite_0\resources\textBundle" />
+<fmt:setLocale value="${locale}" />
+<fmt:setBundle basename="TextBundle"/>
 <!DOCTYPE html>
 <html lang="${language}">
 <head>
-    <title>Title</title>
+    <title><fmt:message key="Regiser"/> </title>
+    <style>
+        <%@include file="../css/enter.css"%>
+    </style>
 </head>
 <body>
 <div class="login-page">
+    <c:out value="${errors}" default=""/>
     <div class="form">
         <form class="login-form" method="post" action="simple">
-            <input type="text" name="login" placeholder="Логин" required>
-            <input type="password" name="password" placeholder="Пароль" required>
+            <input type="text" name="login" placeholder="<fmt:message key="Login"/>" required>
+            <input type="password" name="password" placeholder="<fmt:message key="Password"/>" required>
+            <fmt:message key="Do_you_want_work"/>
+            <input type="radio" name="role" value="master" >
             <input type="hidden" name="WhatToDo" value="Registration" />
-            <button name="submit" type="submit">Зарегистрироваться</button>
-            <p class="message">Зарегистрированы?</p>
+            <button name="submit" type="submit"><fmt:message key="Regiser"/></button>
+            <p class="message"><fmt:message key="Are_registered"/></p>
         </form>
         <form action="simple" method="post">
-            <input type="hidden" name="WhatTodo" value="GoToLogin" />
-            <button>Страница входа</button>
+            <input type="hidden" name="GoTo" value="WEB-INF/jsps/login.jsp" />
+            <button><fmt:message key="Login_page"/> </button>
         </form>
     </div>
 </div>

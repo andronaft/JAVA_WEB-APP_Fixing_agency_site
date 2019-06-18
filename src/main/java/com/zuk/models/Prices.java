@@ -3,7 +3,9 @@ package com.zuk.models;
 public class Prices {
     private String work_kind;
     private int price;
+    public Prices(){
 
+    }
     public Prices(String work_kind, int price) {
         this.work_kind = work_kind;
         this.price = price;

@@ -22,21 +22,19 @@
     </style>
 </head>
 <body>
-<c:out value="${language}"></c:out>ооо
-<fmt:message key="Login" />
 <div class="login-page">
+    <c:out value="${errors}" default=""/>
     <div class="form">
-        ${requestScope.some};
         <form class="login-form" method="Post" action="simple">
-            <input type="text" name="login" placeholder="Логин" required>
-            <input type="password" name="password" placeholder="Пароль" required>
+            <input type="text" name="login" placeholder="<fmt:message key="Login" />" required>
+            <input type="password" name="password" placeholder="<fmt:message key="Password" />" required>
             <input type="hidden" name="WhatToDo" value="Login" />
-            <button name="submit" type="submit">Войти</button>
-            <p class="message">Не зарегистрированы?</p>
+            <button name="submit" type="submit"><fmt:message key="Enter"/> </button>
+            <p class="message"><fmt:message key="Not_registered"/> </p>
         </form>
         <form action="simple" method="post">
-        <input type="hidden" name="WhatToDO" value="GoToRegistration" />
-        <button>Cоздайте аккаунт</button>
+        <input type="hidden" name="GoTo" value="WEB-INF/jsps/register.jsp" />
+        <button><fmt:message key="Create_account"/> </button>
         </form>
     </div>
 </div>

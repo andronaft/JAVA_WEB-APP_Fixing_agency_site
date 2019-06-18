@@ -4,6 +4,24 @@ import java.util.Date;
 
 public class Orders {
     private int order_id;
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "order_id=" + order_id +
+                ", order_by=" + order_by +
+                ", work_kind='" + work_kind + '\'' +
+                ", price=" + price +
+                ", descriprion_work='" + descriprion_work + '\'' +
+                ", payment_state='" + payment_state + '\'' +
+                ", status='" + status + '\'' +
+                ", taken_by=" + taken_by +
+                ", order_date=" + order_date +
+                ", description_text='" + description_text + '\'' +
+                ", response_date=" + response_date +
+                '}';
+    }
+
     private int order_by;
     private String work_kind;
     private int price;
@@ -27,6 +45,9 @@ public class Orders {
         this.order_date = order_date;
         this.description_text = description_text;
         this.response_date = response_date;
+    }
+    public Orders(){
+
     }
 
     public int getOrder_id() {

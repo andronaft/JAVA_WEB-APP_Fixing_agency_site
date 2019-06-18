@@ -1,7 +1,8 @@
 package com.zuk.servlets;
 
 import com.zuk.connection.ConnectionManager;
-import com.zuk.control.Control;
+import com.zuk.requestDispatcher.RequestDispatcher;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,23 +17,49 @@ import java.sql.SQLException;
 
 //@WebServlet(value = "simple")
 public class SimpleServlet extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(SimpleServlet.class);
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
-        Control control = new Control(session,request);
-        HttpServletRequest requestControl = control.work();
-        if(requestControl.getAttribute("done")=="done"){
-            out.print("done");
+        String url="";
+        if(request.getParameter("WhatToDo").equals("LogOut")){
+            session.removeAttribute("id");
+            session.removeAttribute("role");
+            request.getRequestDispatcher("WEB-INF/jsps/login.jsp").forward(request, response);
+            return;
         }
-        out.print(request.getParameter("WhatToDo"));
+        if(request.getParameter("WhatToDo")!=null) {
+            RequestDispatcher requestDispatcher = new RequestDispatcher(session, request);
+            HttpServletRequest resDisp = requestDispatcher.work();
+            if(request.getAttribute("GoTo")!=null) {
+                url = resDisp.getAttribute("GoTo").toString();
+                request.setAttribute("errors", resDisp.getAttribute("errors"));
+            }
+            else{
+                request.setAttribute("errors",resDisp.getAttribute("errors"));
+                out.print(resDisp.getAttribute("html"));
+                return;
+            }
+        }
+        else {
+            url = request.getParameter("GoTo");
+        }
+        if(url!=null){
+           request.getRequestDispatcher(url).forward(request, response);
+           return;
+        }
 
-       // out.print(request.getAttribute("id"));
+
+        out.print("Something is wrong");
+
+        //out.print(request.getAttribute("id"));
         out.print(request.getParameter("id"));
         //out.print(request.getParameterValues("id"));
         out.print("<h1>Hello Servlet</h1>");
-        System.out.println("gdfgd");
-        System.out.println(request.getParameterValues("id"));
+        out.print("gdfgd\ndfgdfg\ndfgdfg\ndgdf\n");
+        System.out.println(request.getParameterValues("htmlId"));
 
 
     }
@@ -40,38 +67,11 @@ public class SimpleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
-
         if(session.getAttribute("id")!=null){
              request.getRequestDispatcher("WEB-INF/jsps/index.jsp").forward(request, response);
              return;
         }
-        //session.setAttribute("id","2");
         request.getRequestDispatcher("WEB-INF/jsps/login.jsp").forward(request, response);
-        PrintWriter out = response.getWriter();
-        Connection cn=null;
-       // request.getRequestDispatcher("WEB-INF/jsps/index.jsp").forward(request, response);
 
-
-
-            ConnectionManager cm = new ConnectionManager();
-            Connection con = cm.getConnection();
-            if(con!=null) {
-                try {
-                    out.print("<h1>Hello Servlet2</h1>");
-                    PreparedStatement pr = con.prepareStatement("update users set login='andronaft' where login='a'");
-                    out.print("2 have done");
-                    pr.executeUpdate();
-                } catch (SQLException e) {
-                    out.print("error in 2 sqlex");
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else{
-
-            }
-
-        out.print("<h1>Hello Servlet</h1>");
     }
 }
